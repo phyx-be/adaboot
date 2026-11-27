@@ -1,0 +1,58 @@
+/*
+ * Phyx Tess (Allwinner T113-S3). Hand-maintained (planned = false in
+ * tools/boards.toml): the board has no flash, only an SD card, and
+ * tess-zephyr's zephyr,flash-on-disk device turns the first 16 MiB of the
+ * card into one (flash offset = card byte offset). The T113 boot chain
+ * fixes the start of the map:
+ *
+ *   0x000000  MBR: one FAT partition, CIRCUITPY, from 16 MiB on
+ *   0x002000  U-Boot SPL (the boot ROM loads it from 8 KiB or 128 KiB)
+ *   0x200000  MCUboot, a legacy uImage the SPL loads (at 2 MiB, else 3 MiB)
+ *   0x400000  the application slot, loaded into RAM by MCUboot
+ *   0x800000  storage, nvm
+ *   0x1000000 CIRCUITPY, outside the flash
+ *
+ * The boot partition is the whole boot chain, partition table included:
+ * MCUboot runs from RAM, so with CONFIG_MCUBOOT_UF2_WRITABLE_BOOTLOADER its
+ * UF2 drive can write all of it. MCUboot started over FEL then sets up a
+ * card (tess-zephyr's scripts/mksdcard.py --uf2 makes the file).
+ *
+ * The application runs from the DRAM, from its start (the board's
+ * zephyr,sram): MCUboot loads the image there, its 0x200 byte header over
+ * the room the application leaves for it (CONFIG_ROM_START_OFFSET), and
+ * runs it. MCUboot itself runs from the top 16 MiB (tess-boot.dtsi).
+ */
+
+&sd_flash {
+	status = "okay";
+	size = <DT_SIZE_M(16)>;
+
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		/* Also the node label "mcuboot", by which
+		 * CONFIG_MCUBOOT_UF2_WRITABLE_BOOTLOADER finds it
+		 */
+		boot_partition: mcuboot: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 DT_SIZE_M(4)>;
+		};
+
+		slot0_partition: partition@400000 {
+			label = "image-0";
+			reg = <0x00400000 DT_SIZE_M(4)>;
+		};
+
+		storage_partition: partition@800000 {
+			label = "storage";
+			reg = <0x00800000 DT_SIZE_K(64)>;
+		};
+
+		nvm_partition: partition@810000 {
+			label = "nvm";
+			reg = <0x00810000 DT_SIZE_K(64)>;
+		};
+	};
+};

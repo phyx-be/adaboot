@@ -388,3 +388,14 @@ mcuboot = false
 board = "nrf54lm20bsim/nrf54lm20a/cpuapp"
 vendor = "native"
 mcuboot = false
+
+[boards.tess]
+# Phyx Tess (Allwinner T113-S3): no flash, the memory map is on the SD card
+# (tess-zephyr's zephyr,flash-on-disk). The planner cannot size that, so the
+# layout in dts/phyx/tess.dtsi is hand-maintained (planned = false); --gen-list
+# derives its conf fragments from it. MCUboot loads the application into DRAM
+# and runs it from there.
+board = "tess"
+vendor = "phyx"
+mcuboot_mode = "single_app_ram_load"
+planned = false

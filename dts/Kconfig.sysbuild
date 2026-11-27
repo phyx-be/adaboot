@@ -35,6 +35,7 @@ config ADABOOT_BOARD
 	default y if $(BOARD) = "stm32h750b_dk"
 	default y if $(BOARD) = "stm32h7b3i_dk"
 	default y if $(BOARD) = "stm32wba65i_dk1"
+	default y if $(BOARD) = "tess"
 	help
 	  This board's flash partition layout is owned by the Adaboot mcuboot
 	  fork and was planned for booting via mcuboot.
@@ -48,6 +49,7 @@ if ADABOOT_BOARD && BOOTLOADER_MCUBOOT
 choice MCUBOOT_MODE
 	default MCUBOOT_MODE_OVERWRITE_ONLY if $(BOARD) = "ek_ra6m5"
 	default MCUBOOT_MODE_OVERWRITE_ONLY if $(BOARD) = "ek_ra8d1"
+	default MCUBOOT_MODE_SINGLE_APP_RAM_LOAD if $(BOARD) = "tess"
 	default MCUBOOT_MODE_SWAP_USING_OFFSET if $(BOARD) = "nrf5340dk"
 	default MCUBOOT_MODE_SWAP_USING_OFFSET if $(BOARD) = "nrf54l15dk"
 	default MCUBOOT_MODE_SWAP_USING_OFFSET if $(BOARD) = "nrf54lm20dk"

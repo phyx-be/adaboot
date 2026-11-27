@@ -1,0 +1,21 @@
+/*
+ * Phyx Tess, MCUboot only: it runs from the top 16 MiB of the DRAM (the
+ * SPL loads its uImage there) and loads the application below it.
+ */
+
+/ {
+	mcuboot_ram: mcuboot-ram@47000000 {
+		compatible = "mmio-sram";
+		reg = <0x47000000 DT_SIZE_M(16)>;
+	};
+
+	image_ram: image-ram@40000000 {
+		compatible = "mmio-sram";
+		reg = <0x40000000 DT_SIZE_M(112)>;
+	};
+
+	chosen {
+		zephyr,sram = &mcuboot_ram;
+		mcuboot,image-ram = &image_ram;
+	};
+};

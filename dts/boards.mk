@@ -14,7 +14,7 @@
 #                  matching CircuitPython's BOARD ids; a key that already
 #                  starts with its vendor name is its own id)
 
-MCUBOOT_BOARDS := adafruit_metro_ch32v407 adafruit_metro_ch32v467 adafruit_metro_m7 adafruit_metro_m7_airlift da14695_dk_usb ek_ra6m5 ek_ra8d1 frdm_mcxn947 frdm_rw612 mimxrt1010_evk mimxrt1170_evk nrf5340dk nrf54h20dk nrf54l15dk nrf54lm20dk nrf7002dk nucleo_n657x0_q nucleo_u575zi_q siwx917_dk2605a stm32h750b_dk stm32h7b3i_dk stm32wba65i_dk1
+MCUBOOT_BOARDS := adafruit_metro_ch32v407 adafruit_metro_ch32v467 adafruit_metro_m7 adafruit_metro_m7_airlift da14695_dk_usb ek_ra6m5 ek_ra8d1 frdm_mcxn947 frdm_rw612 mimxrt1010_evk mimxrt1170_evk nrf5340dk nrf54h20dk nrf54l15dk nrf54lm20dk nrf7002dk nucleo_n657x0_q nucleo_u575zi_q siwx917_dk2605a stm32h750b_dk stm32h7b3i_dk stm32wba65i_dk1 tess
 
 adafruit_metro_ch32v407_BOARD := adafruit_metro_ch32v407
 adafruit_metro_ch32v407_DTSI := dts/adafruit/adafruit_metro_ch32v407.dtsi
@@ -103,4 +103,8 @@ stm32h7b3i_dk_BOARD_ID := st_stm32h7b3i_dk
 stm32wba65i_dk1_BOARD := stm32wba65i_dk1
 stm32wba65i_dk1_DTSI := dts/st/stm32wba65i_dk1.dtsi
 stm32wba65i_dk1_BOARD_ID := st_stm32wba65i_dk1
+
+tess_BOARD := tess
+tess_DTSI := dts/phyx/tess.dtsi
+tess_BOARD_ID := phyx_tess
 
